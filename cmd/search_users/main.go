@@ -3,7 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/AryanshMahato/go-csv-proj/pkg/constants"
 	"github.com/AryanshMahato/go-csv-proj/pkg/flagparser"
+	"github.com/AryanshMahato/go-csv-proj/pkg/processor"
+	"log"
 )
 
 var (
@@ -18,5 +21,12 @@ func init() {
 
 func main() {
 	flagParser := flagparser.NewAppFlagParser(tagFlag)
-	fmt.Println("tags", flagParser.GetTags())
+	tags := flagParser.GetTags()
+
+	searchUsersProcessor := processor.NewSearchUsersProcessor(tags, constants.CsvFileDir)
+
+	err := searchUsersProcessor.Process()
+	if err != nil {
+		log.Fatal(err)
+	}
 }
