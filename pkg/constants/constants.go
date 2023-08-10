@@ -1,5 +1,6 @@
 package constants
 
 const (
-	CsvFileDir = "/temp"
+	CsvFileDir      = "/temp"
+	UserCsvFileName = "users.csv"
 )

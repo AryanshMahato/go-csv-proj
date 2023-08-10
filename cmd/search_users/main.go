@@ -16,7 +16,7 @@ var (
 
 func init() {
 	fmt.Println("Searching users...")
-	flag.StringVar(&tagFlag, "tag", "", "Search users by tag")
+	flag.StringVar(&tagFlag, "tags", "", "Search users by tag")
 	flag.Parse()
 }
 
