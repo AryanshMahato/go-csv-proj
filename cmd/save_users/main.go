@@ -12,7 +12,7 @@ import (
 )
 
 func init() {
-	fmt.Println("Getting users...")
+	fmt.Println("Saving users...")
 }
 
 func main() {

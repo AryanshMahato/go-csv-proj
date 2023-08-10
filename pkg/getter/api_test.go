@@ -14,23 +14,23 @@ func TestAppApi_GetUsers(t *testing.T) {
 		config *mocks.Config
 	}
 
-	type testMock struct {
+	type mockValues struct {
 		apiResponse []byte
 	}
 
 	tests := []struct {
-		name   string
-		fields fields
-		testMock
-		want    []model.User
-		wantErr bool
+		name       string
+		fields     fields
+		mockValues mockValues
+		want       []model.User
+		wantErr    bool
 	}{
 		{
 			name: "no users found",
 			fields: fields{
 				config: &mocks.Config{},
 			},
-			testMock: testMock{
+			mockValues: mockValues{
 				apiResponse: []byte(`[]`),
 			},
 			want: make([]model.User, 0),
@@ -40,7 +40,7 @@ func TestAppApi_GetUsers(t *testing.T) {
 			fields: fields{
 				config: &mocks.Config{},
 			},
-			testMock: testMock{
+			mockValues: mockValues{
 				apiResponse: []byte(`[{"_id":"64d39b0582ec3cff5fc7f24e","index":0,"guid":"03ee84da-5a54-493f-8438-60bad7ab6e2a","isActive":true,"balance":"$2,633.92","tags":["pariatur","qui","ea","culpa","laboris","laboris","minim"],"friends":[{"id":0,"name":"KochValdez"},{"id":1,"name":"KramerBush"},{"id":2,"name":"TownsendChurch"}]}]`),
 			},
 			want: []model.User{
@@ -60,7 +60,7 @@ func TestAppApi_GetUsers(t *testing.T) {
 			fields: fields{
 				config: &mocks.Config{},
 			},
-			testMock: testMock{
+			mockValues: mockValues{
 				apiResponse: []byte(`[`),
 			},
 			want:    nil,
@@ -70,7 +70,7 @@ func TestAppApi_GetUsers(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			testServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-				_, _ = w.Write(tt.testMock.apiResponse)
+				_, _ = w.Write(tt.mockValues.apiResponse)
 			}))
 
 			tt.fields.config.On("GetApiUrl").Return(testServer.URL, nil).Once()

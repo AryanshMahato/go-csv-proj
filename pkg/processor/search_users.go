@@ -29,6 +29,10 @@ func (p *SearchUsersProcessor) Process() error {
 		}
 	}
 
+	if len(matchedUsers) == 0 {
+		return ErrNoMatchingUsers
+	}
+
 	fmt.Println(matchedUsers)
 
 	return nil
