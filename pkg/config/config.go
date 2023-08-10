@@ -1,32 +1,42 @@
 package config
 
-import "os"
+import (
+	"os"
+	"strings"
+)
 
 const (
 	ApiURLKey = "API_URL"
 )
 
 type Config interface {
-	GetApiUrl() (string, error)
+	GetApiUrls() ([]string, error)
 }
 
 type AppConfig struct {
-	apiUrl string
+	apiUrls []string
 }
 
 func NewAppConfig() *AppConfig {
-	apiUrl := os.Getenv(ApiURLKey)
+	apiUrls := os.Getenv(ApiURLKey)
+	parsedApiUrls := strings.Split(apiUrls, ",")
+	var correctApiUrls []string
+	for _, url := range parsedApiUrls {
+		if url != "" {
+			correctApiUrls = append(correctApiUrls, url)
+		}
+	}
 
 	return &AppConfig{
-		apiUrl,
+		apiUrls: correctApiUrls,
 	}
 }
 
-// GetApiUrl return apiUrl from the config(env)
-func (a *AppConfig) GetApiUrl() (string, error) {
-	if len(a.apiUrl) == 0 {
-		return "", ErrNotFound
+// GetApiUrls return apiUrl from the config(env)
+func (a *AppConfig) GetApiUrls() ([]string, error) {
+	if len(a.apiUrls) == 0 {
+		return nil, ErrNotFound
 	}
 
-	return a.apiUrl, nil
+	return a.apiUrls, nil
 }

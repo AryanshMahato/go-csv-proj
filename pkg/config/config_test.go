@@ -13,23 +13,23 @@ func TestAppConfig_GetApiUrl(t *testing.T) {
 	tests := []struct {
 		name    string
 		fields  fields
-		want    string
+		want    []string
 		wantErr error
 	}{
 		{
-			name: "getter url is present in env",
+			name: "one url is present in env",
 			fields: fields{
 				apiUrl: "API_URL",
 			},
-			want:    "API_URL",
+			want:    []string{"API_URL"},
 			wantErr: nil,
 		},
 		{
-			name: "getter url is not set in env",
+			name: "no url is present in env",
 			fields: fields{
 				apiUrl: "",
 			},
-			want:    "",
+			want:    nil,
 			wantErr: ErrNotFound,
 		},
 	}
@@ -38,7 +38,7 @@ func TestAppConfig_GetApiUrl(t *testing.T) {
 			_ = os.Setenv(ApiURLKey, tt.fields.apiUrl)
 			a := NewAppConfig()
 
-			got, err := a.GetApiUrl()
+			got, err := a.GetApiUrls()
 
 			assert.Equal(t, tt.want, got)
 			assert.Equal(t, tt.wantErr, err)

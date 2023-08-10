@@ -1,6 +1,8 @@
 package getter
 
 import (
+	"errors"
+	"fmt"
 	"github.com/AryanshMahato/go-csv-proj/pkg/config"
 	"github.com/AryanshMahato/go-csv-proj/pkg/model"
 	"io"
@@ -18,11 +20,26 @@ func NewApiGetter(client *http.Client, config config.Config) *ApiGetter {
 
 // GetUsers returns all users from the API
 func (a *ApiGetter) GetUsers() ([]model.User, error) {
-	url, err := a.config.GetApiUrl()
+	var errorsList []error
+	urls, err := a.config.GetApiUrls()
 	if err != nil {
 		return nil, err
 	}
 
+	for _, url := range urls {
+		users, err := a.getUsers(url)
+		if err != nil {
+			errorsList = append(errorsList, err)
+			fmt.Println(err, "for url", url)
+		} else {
+			return users, nil
+		}
+	}
+
+	return nil, errors.Join(errorsList...)
+}
+
+func (a *ApiGetter) getUsers(url string) ([]model.User, error) {
 	response, err := a.client.Get(url)
 	if err != nil {
 		return nil, err

@@ -73,7 +73,7 @@ func TestAppApi_GetUsers(t *testing.T) {
 				_, _ = w.Write(tt.mockValues.apiResponse)
 			}))
 
-			tt.fields.config.On("GetApiUrl").Return(testServer.URL, nil).Once()
+			tt.fields.config.On("GetApiUrls").Return([]string{testServer.URL}, nil).Once()
 
 			a := NewApiGetter(testServer.Client(), tt.fields.config)
 
