@@ -1,4 +1,4 @@
-package api
+package getter
 
 import (
 	"github.com/AryanshMahato/go-csv-proj/pkg/config"
@@ -7,21 +7,17 @@ import (
 	"net/http"
 )
 
-type Api interface {
-	GetUsers() ([]model.User, error)
-}
-
-type AppApi struct {
+type ApiGetter struct {
 	client *http.Client
 	config config.Config
 }
 
-func NewAppApi(client *http.Client, config config.Config) *AppApi {
-	return &AppApi{client: client, config: config}
+func NewApiGetter(client *http.Client, config config.Config) *ApiGetter {
+	return &ApiGetter{client: client, config: config}
 }
 
 // GetUsers returns all users from the API
-func (a *AppApi) GetUsers() ([]model.User, error) {
+func (a *ApiGetter) GetUsers() ([]model.User, error) {
 	url, err := a.config.GetApiUrl()
 	if err != nil {
 		return nil, err

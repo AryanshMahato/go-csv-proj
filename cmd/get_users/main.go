@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/AryanshMahato/go-csv-proj/pkg/api"
 	"github.com/AryanshMahato/go-csv-proj/pkg/config"
 	"github.com/AryanshMahato/go-csv-proj/pkg/constants"
+	"github.com/AryanshMahato/go-csv-proj/pkg/getter"
 	"github.com/AryanshMahato/go-csv-proj/pkg/processor"
 	"github.com/AryanshMahato/go-csv-proj/pkg/saver"
 	"log"
@@ -18,12 +18,12 @@ func init() {
 func main() {
 	appConfig := config.NewAppConfig()
 
-	appApi := api.NewAppApi(&http.Client{}, appConfig)
+	apiGetter := getter.NewApiGetter(&http.Client{}, appConfig)
 	fileSaver := saver.NewFileSaver(constants.CsvFileDir)
 
-	getUsersProcessor := processor.NewGetUsersProcessor(appApi, fileSaver)
+	saveUsersProcessor := processor.NewSaveUsersProcessor(apiGetter, fileSaver)
 
-	err := getUsersProcessor.Process()
+	err := saveUsersProcessor.Process()
 	if err != nil {
 		log.Fatal(err)
 	}

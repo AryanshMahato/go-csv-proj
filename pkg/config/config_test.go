@@ -17,7 +17,7 @@ func TestAppConfig_GetApiUrl(t *testing.T) {
 		wantErr error
 	}{
 		{
-			name: "api url is present in env",
+			name: "getter url is present in env",
 			fields: fields{
 				apiUrl: "API_URL",
 			},
@@ -25,7 +25,7 @@ func TestAppConfig_GetApiUrl(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name: "api url is not set in env",
+			name: "getter url is not set in env",
 			fields: fields{
 				apiUrl: "",
 			},

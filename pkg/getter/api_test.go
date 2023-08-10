@@ -1,4 +1,4 @@
-package api
+package getter
 
 import (
 	"github.com/AryanshMahato/go-csv-proj/mocks"
@@ -75,7 +75,7 @@ func TestAppApi_GetUsers(t *testing.T) {
 
 			tt.fields.config.On("GetApiUrl").Return(testServer.URL, nil).Once()
 
-			a := NewAppApi(testServer.Client(), tt.fields.config)
+			a := NewApiGetter(testServer.Client(), tt.fields.config)
 
 			got, err := a.GetUsers()
 			assert.Equal(t, tt.want, got)
